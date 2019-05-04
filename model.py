@@ -1,8 +1,5 @@
 # coding: utf-8
 import math
-import sys
-user_nm = 'shy256'
-sys.path.insert(0, f'/home/{user_nm}/dl19/torch-ensembler')
 import torch
 import torch.nn as nn
 from torch.functional import F
