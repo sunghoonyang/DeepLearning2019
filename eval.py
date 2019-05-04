@@ -57,7 +57,6 @@ def evaluate(model, data_loader, device, split, top_k=5):
 
 
 if __name__ == '__main__':
-
     # Define arguments
     parser = argparse.ArgumentParser(description='Evaluation')
     parser.add_argument('--data_dir', type=str, default='./data',
