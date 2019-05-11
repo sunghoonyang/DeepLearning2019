@@ -2,17 +2,20 @@ from model import Model
 import argparse
 import json
 import torch
-
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
+
 
 def load_data(data_dir, batch_size, split):
     """ Method returning a data loader for labeled data """
     # TODO (optional): add data transformations if needed
     transform = transforms.Compose([
-        transforms.ToTensor()
-        ]
-    )
+        transforms.Resize(299),
+        transforms.CenterCrop(299),
+        transforms.ToTensor(),
+        transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+    ])
+    
     data = datasets.ImageFolder(f'{data_dir}/supervised/{split}', transform=transform)
     data_loader = DataLoader(
         data,
@@ -82,7 +85,9 @@ if __name__ == '__main__':
         torch.cuda.manual_seed_all(args.seed)
 
     # Load pre-trained model
-    model = Model().to(args.device) # DO NOT modify this line - if your Model() takes arguments, they should have default values
+    model = Model()
+    model = nn.DataParallel(model)
+    model = model.to(args.device) # DO NOT modify this line - if your Model() takes arguments, they should have default values
     print('n parameters: %d' % sum([m.numel() for m in model.parameters()]))
 
     # Load data
